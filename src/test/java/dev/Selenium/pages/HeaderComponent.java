@@ -8,11 +8,8 @@ public class HeaderComponent extends BasePage{
     @FindBy(className = "shopping_cart_link")
     private WebElement cartButton;
 
-    public HeaderComponent(WebDriver driver) {
-        super(driver);
-    }
-
     public void openCatByIcon() {
         cartButton.click();
     }
 }
+

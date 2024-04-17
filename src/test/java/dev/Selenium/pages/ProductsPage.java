@@ -1,6 +1,5 @@
 package dev.Selenium.pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -15,9 +14,6 @@ public class ProductsPage extends BasePage {
     @FindBy(className = "shopping_cart_link")
     private WebElement cartButton;
 
-    public ProductsPage(WebDriver driver) {
-        super(driver);
-    }
 
     public String getPageTitle() {
         return pageTitle.getText();
@@ -33,7 +29,7 @@ public class ProductsPage extends BasePage {
     }
 
     public HeaderComponent header() {
-        return new HeaderComponent(driver);
+        return new HeaderComponent();
     }
 
 }

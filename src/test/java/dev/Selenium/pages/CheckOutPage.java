@@ -15,12 +15,8 @@ public class CheckOutPage extends BasePage {
     @FindBy(css = ".cart_button")
     private List<WebElement> listOfRemoveButtons;
 
-    public CheckOutPage(WebDriver driver) {
-        super(driver);
-    }
-
     public HeaderComponent header() {
-        return new HeaderComponent(driver);
+        return new HeaderComponent();
     }
 
     public void clickRemove() {

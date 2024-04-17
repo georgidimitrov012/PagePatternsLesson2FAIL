@@ -37,14 +37,14 @@ public class DriverFactory {
         //return driver;
     }
 
-  public static void getFireFoxDriver(int wait) {
+  /*public static void getFireFoxDriver(int wait) {
       //FirefoxOptions options = new FirefoxOptions();
        WebDriver driver = new FirefoxDriver();
         driver.manage().window().maximize();
      driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(wait));
       return driver;
        //tlDriver.set(driver);
-   }
+   }*/
 
     public static void quitDriver() {
         if (tlDriver.get() != null) {

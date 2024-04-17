@@ -11,76 +11,39 @@ import java.util.List;
 public class LoginPage extends BasePage {
 
     @FindBy(id = "user-name")
-    private WebElement usernameInput;
+    private WebElement usernameField;
 
     @FindBy(id = "password")
-    private WebElement passwordInput;
+    private WebElement passwordField;
 
     @FindBy(id = "login-button")
-    private WebElement logInButton;
+    private WebElement loginButton;
 
-    @FindBy(css = "h3")
-    private WebElement errorButton;
+    @FindBy(css = ".error-message-container")
+    private WebElement errorMessageContainer;
 
-    @FindBy(className = "error-message-container")
-    private WebElement errorContainer;
-
-    @FindBy(className = "error-message-container")
-    private List<WebElement>listOfErrorContainer;
-
-    @FindBy(className = "error-button")
-    private WebElement errorXButton;
-
-
-    public LoginPage(WebDriver driver) {
-        super(driver);
+    public void setUsername(String username) {
+        usernameField.clear();
+        usernameField.sendKeys(username);
     }
 
-    public void setUserName(String username) {
-        usernameInput.sendKeys(username);
-    }
 
     public void setPassword(String password) {
-        passwordInput.sendKeys(password);
+        passwordField.clear();
+        passwordField.sendKeys(password);
     }
 
-    public void clickLogInButton() {
-        logInButton.click();
+    public void clickLoginButton() {
+        loginButton.click();
+    }
+
+    public void loginAs(String username, String password) {
+        setUsername(username);
+        setPassword(password);
+        clickLoginButton();
     }
 
     public String getErrorMessage() {
-         return errorContainer.getText();
-    }
-
-    public void checkErrorBox() {
-        String errorText = errorButton.getText();
-        Assert.assertEquals(errorText, "Epic sadface: Username and password do not match any user in this service");
-
-        String errorContainerColor = errorContainer.getCssValue("background-color");
-        Assert.assertEquals(errorContainerColor, "rgba(226, 35, 26, 1)");
-
-        errorXButton.click();
-    }
-
-    public boolean checkErrorContainerIsPresent() {
-        if (listOfErrorContainer.size() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void clearUserNameField() {
-        usernameInput.clear();
-    }
-
-    public void clearPasswordField() {
-        passwordInput.clear();
-    }
-
-    public void logInAs(String userName, String password) {
-        setUserName(userName);
-        setPassword(password);
-        clickLogInButton();
+        return errorMessageContainer.getText();
     }
 }

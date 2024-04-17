@@ -1,12 +1,13 @@
-package dev.Selenium.base;
+package dev.Selenium.steps;
 
 import dev.selenium.driver.DriverFactory;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -15,17 +16,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 
-public class MainTest {
+public class TestHook {
     public WebDriver driver;
     private String url;
     private int implicitWait;
     private String browser;
 
-    @BeforeMethod
+    @Before
     public void setUp() {
         /*driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
@@ -48,11 +48,11 @@ public class MainTest {
 
         switch (browser) {
             case "chrome":
-                driver = DriverFactory.getChromeDriver(implicitWait);
+                DriverFactory.getChromeDriver(implicitWait);
                 break;
-            case "firefox":
+            /*case "firefox":
                 driver = DriverFactory.getFireFoxDriver(implicitWait);
-                break;
+                break;*/
             default:
                 throw new IllegalStateException("Unsupported browser type!");
         }
@@ -65,24 +65,16 @@ public class MainTest {
     }
 
 
-    @AfterMethod
-    public void tearDown(ITestResult result) {
-        WebDriver driver =
-        if (ITestResult.FAILURE == result.getStatus()) {
+    @After
+    public void tearDown(Scenario scenario) {
+        WebDriver driver = DriverFactory.getDriver();
+
+        if (scenario.isFailed()) {
             TakesScreenshot ts = (TakesScreenshot) driver;
-            File source = ts.getScreenshotAs(OutputType.FILE);
-            String timestamp = new SimpleDateFormat("yyyy_MM_dd__hh_mm_ss").format(new Date());
-            String fileName = result.getName() + "_" + timestamp + ".png";
-
-            try {
-                FileUtils.copyFile(source, new File("./Screenshots/" + fileName));
-                System.out.println("Screenshot taken: " + fileName);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot,"image/png","Screenshot_" + new SimpleDateFormat("yyyy_MM_DD__hh_mm_ss").format(new Date()));
         }
 
-        //driver.quit();
+        driver.quit();
     }
 }
